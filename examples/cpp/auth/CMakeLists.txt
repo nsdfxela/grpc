@@ -61,6 +61,18 @@ add_library(helper
   "helper.h"
   "helper.cc")
 
+# dummy dll wrapper
+add_library(grpc_dynamic SHARED
+	grpc_dynamic.h
+	grpc_dynamic.cc
+)
+target_link_libraries(grpc_dynamic PRIVATE ${_GRPC_GRPCPP} helper)
+
+# app that uses dll
+add_executable(issue_demo "issue_demo.cc")
+target_link_libraries(issue_demo grpc_dynamic)
+
+
 # Targets greeter_(client|server)
 foreach(_target
   ssl_client ssl_server)
